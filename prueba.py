@@ -1,4 +1,4 @@
 import time
 
 print ("Hola mundo")
-time.sleep(3)
+time.sleep(5)
