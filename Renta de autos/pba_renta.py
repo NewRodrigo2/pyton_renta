@@ -1,4 +1,3 @@
-# estoy probando como controlar los branch, ya que perdi una vez todo mi trabajo
 import os
 import json
 
@@ -9,21 +8,9 @@ COLOR_ERROR = "\033[91m"   # Rojo
 COLOR_ADMIN = "\033[95m"   # Morado (Para el menú de administrador)
 COLOR_RESET = "\033[0m"    # Volver al color normal
 
-
-#................................................................................
 # RUTA SOLICITADA: Se usa os.path.join para evitar problemas con las barras invertidas en Windows
-#CARPETA_DATOS = r"D:\programacion\python"
-CARPETA_DATOS = r"E:\Python\Python Project\datos"
+CARPETA_DATOS = r"D:\programacion\python"
 ARCHIVO_DATOS = os.path.join(CARPETA_DATOS, "inventario.json")
-#................................................................................
-
-# === SOLUCIÓN USB: RUTA AUTOMATIZADA ===
-# Detecta dinámicamente dónde está corriendo este archivo en tu memoria USB
-#CARPETA_PROYECTO = os.path.dirname(os.path.abspath(__file__))
-
-# Crea de forma limpia una carpeta llamada "datos" dentro del directorio del script
-#CARPETA_DATOS = os.path.join(CARPETA_PROYECTO, "datos")
-#ARCHIVO_DATOS = os.path.join(CARPETA_DATOS, "inventario.json")
 
 # Contraseña para la opción oculta
 CLAVE_ADMIN = "admin123"
@@ -76,11 +63,11 @@ def row_space():
 
 def mostrar_inventario():
     print(f"\n{COLOR_TITULO}=================================================")
-    print("------- INVENTARIO DE AUTOS -------")
+    print("------- INVENTARIO  COMPLETO DE AUTOS -------")
     print(f"\n ================================================={COLOR_RESET} ")
     for auto in inventario:
         estado = f"{COLOR_EXITO}Disponible{COLOR_RESET}" if auto["disponible"] else f"{COLOR_ERROR}Rentado{COLOR_RESET}"
-        print(f"[{auto['id']}] {auto['marca']} {auto['modelo']} - ${auto['precio_dia']}/día ({estado}) rentado por {COLOR_ADMIN}{auto['dias']} dias{COLOR_RESET}")
+        print(f"[{auto['id']}] {auto['marca']} {auto['modelo']} - ${auto['precio_dia']}/día ({estado}) rentado por {auto['dias']}")
 
 def mostrar_inv_disp():
     print(f"\n{COLOR_TITULO}=================================================")
@@ -122,7 +109,7 @@ def rentar_auto():
                     auto["venta"] = (dias_p_renta*auto["precio_dia"])
                     auto["km"] = 0
                     # auto["venta"] = 0
-                    guardar_inventario()
+                    guardar_inventario()             
                     limpiar_pantalla()
                     print(f"\n{COLOR_EXITO}¡Éxito! Ha rentado el {auto['marca']} {auto['modelo']}.{COLOR_RESET}")
                     print(f"\n{COLOR_EXITO}Presupuesto estimado en dias / costo por dia: ${dias_p_renta * auto['precio_dia']}{COLOR_RESET}")
@@ -147,19 +134,15 @@ def regresar_auto():
         for auto in inventario:
             if auto["id"] == id_regresa:
                 if not auto["disponible"]: 
-
+                    limpiar_pantalla()                  
+                    print(f"total a pagar es de: $ {auto['dias'] * auto['precio_dia'] + auto['km']}")
+                    print(f"\n{COLOR_EXITO}¡Éxito! Auto regresado exitosamente: {auto['marca']} {auto['modelo']}.{COLOR_RESET}")
+                    row_space()        #  enter para continuar
                     auto["disponible"] = True
                     auto["km"] = km_recorridos
                     auto["venta"] = auto['dias'] * auto['precio_dia'] + km_recorridos
-                   
-                    limpiar_pantalla()
-                    print (f"\nkilometros recorridos" , km_recorridos)
-                    print(f"\ntotal a pagar es de: $ {auto['venta']}  por  {auto['dias']} dias de uso")
                     auto["dias"] = 0
                     auto["km"] = 0
-                    print(f"\n{COLOR_EXITO}¡Éxito! Auto regresado exitosamente: {auto['marca']} {auto['modelo']}.{COLOR_RESET}")
-                    row_space()        #  enter para continuar
-
                     guardar_inventario()
                     return
                 else:

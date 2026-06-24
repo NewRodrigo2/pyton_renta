@@ -1,0 +1,61 @@
+[
+    {
+        "id": 1,
+        "marca": "Toyota",
+        "modelo": "Yaris",
+        "precio_dia": 45,
+        "disponible": true,
+        "dias": 0,
+        "km": 100.0,
+        "venta": 100.0
+    },
+    {
+        "id": 2,
+        "marca": "Nissan",
+        "modelo": "Versa",
+        "precio_dia": 50,
+        "disponible": true,
+        "dias": 0,
+        "km": 1.0,
+        "venta": 1.0
+    },
+    {
+        "id": 3,
+        "marca": "Chevrolet",
+        "modelo": "Aveo",
+        "precio_dia": 40,
+        "disponible": true,
+        "dias": 0,
+        "km": 100.0,
+        "venta": 100.0
+    },
+    {
+        "id": 4,
+        "marca": "Nissan",
+        "modelo": "Versa",
+        "precio_dia": 34.0,
+        "disponible": true,
+        "dias": 0,
+        "km": 0,
+        "venta": 134.0
+    },
+    {
+        "id": 5,
+        "marca": "wv",
+        "modelo": "pointer",
+        "precio_dia": 56.0,
+        "disponible": true,
+        "dias": 0,
+        "km": 0,
+        "venta": 156.0
+    },
+    {
+        "id": 6,
+        "marca": "GM",
+        "modelo": "Ignoro",
+        "precio_dia": 45.0,
+        "disponible": true,
+        "dias": 0,
+        "km": 67.0
+    }
+]

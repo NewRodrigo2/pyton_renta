@@ -1,3 +1,5 @@
 @echo off
-"%LOCALAPPDATA%\Programs\Python\Python313\python.exe" bounce.py
+"E:\Python313\python.exe" "E:\Python\Python Project\prueba.py"
 pause
+
+REM %LOCALAPPDATA%

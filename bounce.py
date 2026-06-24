@@ -4,7 +4,7 @@ import sys
 # --- Settings ---
 WIDTH, HEIGHT = 800, 600
 FPS = 60
-CHAR = "D"
+CHAR = "M"
 FONT_SIZE = 48
 SPEED = 5
 BG_COLOR = (15, 15, 30)
