@@ -1,7 +1,7 @@
 # ESTE ARCHIVO FUE MODIFICADO EL 23/06/26 Y LO CONSIDERO COMO LA MEJOR VERSION HASTA EL MOMENTO
 # CREADO EN LA USB   ---> BUSCAR LA MENERA DE PASARLO A LA COMPUTADORA VIA GIT O Github
 # por eso la ruta del .json se debe de modificar
-
+# haciendo un cambio ya que git dice que no existe el script
 import os
 import json
 
@@ -11,7 +11,6 @@ COLOR_EXITO = "\033[92m"   # Verde
 COLOR_ERROR = "\033[91m"   # Rojo
 COLOR_ADMIN = "\033[95m"   # Morado (Para el menú de administrador)
 COLOR_RESET = "\033[0m"    # Volver al color normal
-
 
 #................................................................................
 # RUTA SOLICITADA: Se usa os.path.join para evitar problemas con las barras invertidas en Windows
@@ -109,7 +108,6 @@ def mostrar_inv_no_disp():
             print(f"[{auto['id']}] {auto['marca']} {auto['modelo']} - ${auto['precio_dia']}/día ({estado})")
             sum_disp = sum_disp + 1
     print (f"\n{COLOR_ADMIN} Total de autos en la lista: {sum_disp}{COLOR_RESET}")    
-
 
 def rentar_auto():
     mostrar_inv_disp()
