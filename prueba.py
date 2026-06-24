@@ -1,4 +1,7 @@
-# estoy probando como controlar los branch, ya que perdi una vez todo mi trabajo
+# ESTE ARCHIVO FUE MODIFICADO EL 23/06/26 Y LO CONSIDERO COMO LA MEJOR VERSION HASTA EL MOMENTO
+# CREADO EN LA USB   ---> BUSCAR LA MENERA DE PASARLO A LA COMPUTADORA VIA GIT O Github
+# por eso la ruta del .json se debe de modificar
+
 import os
 import json
 
