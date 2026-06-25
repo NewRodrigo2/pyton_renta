@@ -5,7 +5,6 @@
 import os
 import json
 
-
 # Constantes para los colores en la terminal (Códigos ANSI)
 COLOR_TITULO = "\033[94m"  # Azul
 COLOR_EXITO = "\033[92m"   # Verde
@@ -18,6 +17,7 @@ COLOR_RESET = "\033[0m"    # Volver al color normal
 #CARPETA_DATOS = r"D:\programacion\python"
 CARPETA_DATOS = r"E:\Python\Python Project\datos"
 ARCHIVO_DATOS = os.path.join(CARPETA_DATOS, "inventario.json")
+ARCHIVO_CONTROL = os.path.join(CARPETA_DATOS, "control.json")
 #................................................................................
 
 # === SOLUCIÓN USB: RUTA AUTOMATIZADA ===
@@ -36,6 +36,10 @@ INVENTARIO_DEFECTO = [
     {"id": 1, "marca": "Toyota", "modelo": "Yaris", "precio_dia": 45, "disponible": True, "dias": 0, "km": 0, "venta": 0},
     {"id": 2, "marca": "Nissan", "modelo": "Versa", "precio_dia": 50, "disponible": True, "dias": 0, "km": 0, "venta": 0},
     {"id": 3, "marca": "Chevrolet", "modelo": "Aveo", "precio_dia": 40, "disponible": False, "dias": 0, "km": 0, "venta": 0}
+]
+
+AUTO_CONTROL = [
+    {"id": 1, "km_recorridos": 0, "venta_total": 0, "mtto":}
 ]
 
 inventario = [] #  Arreglo vacio
@@ -91,7 +95,7 @@ def mostrar_inventario():
 def mostrar_inv_disp():
     print(f"\n{COLOR_TITULO}=================================================")
     print("------- INVENTARIO DE AUTOS DISPONIBLES -------")
-    print(f"\n ================================================={COLOR_RESET} ")
+    print(f"================================================={COLOR_RESET} ")
     sum_disp = 0
     for auto in inventario:
         if auto["disponible"]:
@@ -104,7 +108,7 @@ def mostrar_inv_disp():
 def mostrar_inv_no_disp():
     print(f"\n{COLOR_TITULO}=================================================")
     print("------- INVENTARIO DE AUTOS NO DISPONIBLES -------")
-    print(f"\n ================================================={COLOR_RESET} ")
+    print(f"================================================={COLOR_RESET} ")
     sum_disp = 0
     for auto in inventario:
         if not auto["disponible"]:
@@ -143,6 +147,7 @@ def rentar_auto():
         row_space()
     except ValueError:
         print(f"\n{COLOR_ERROR}Por favor, introduzca un número válido.{COLOR_RESET}")
+        row_space()
         
 def regresar_auto():
     mostrar_inv_no_disp()
@@ -164,13 +169,12 @@ def regresar_auto():
                     auto["km"] = 0
                     print(f"\n{COLOR_EXITO}¡Éxito! Auto regresado exitosamente: {auto['marca']} {auto['modelo']}.{COLOR_RESET}")
                     row_space()        #  enter para continuar
-
                     guardar_inventario()
                     return
                 else:
                     limpiar_pantalla()
                     print(f"\n{COLOR_ERROR}Este auto  (no está rentado).{COLOR_RESET}")
-                    # row_space()
+                    row_space()
                     return
                     
         limpiar_pantalla()
