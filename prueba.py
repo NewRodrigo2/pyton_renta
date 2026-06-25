@@ -5,6 +5,7 @@
 import os
 import json
 
+
 # Constantes para los colores en la terminal (Códigos ANSI)
 COLOR_TITULO = "\033[94m"  # Azul
 COLOR_EXITO = "\033[92m"   # Verde
@@ -75,6 +76,9 @@ def row_space():
     print(".")
     print(".")
     wait = input(f"\n {COLOR_TITULO}ENTER PARA CONTINUAR ..{COLOR_RESET} ")
+
+print("probando el nuevo token")
+row_space
 
 def mostrar_inventario():
     print(f"\n{COLOR_TITULO}=================================================")
@@ -241,7 +245,6 @@ def menu_administrador():
             row_space()
 
 # ===========================================================================================================
-
 def menu_principal():
     cargar_inventario()
     while True:
