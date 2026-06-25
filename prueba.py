@@ -1,9 +1,11 @@
-# ESTE ARCHIVO FUE MODIFICADO EL 23/06/26 Y LO CONSIDERO COMO LA MEJOR VERSION HASTA EL MOMENTO
+# ESTE ARCHIVO FUE MODIFICADO EL 24/06/26 con modificaciones en 
+# 1.- creando nuevo diccionario 
 # CREADO EN LA USB   ---> BUSCAR LA MENERA DE PASARLO A LA COMPUTADORA VIA GIT O Github
 # por eso la ruta del .json se debe de modificar
 # haciendo un cambio ya que git dice que no existe el script
 import os
 import json
+from datetime import datetime
 
 # Constantes para los colores en la terminal (Códigos ANSI)
 COLOR_TITULO = "\033[94m"  # Azul
@@ -17,7 +19,7 @@ COLOR_RESET = "\033[0m"    # Volver al color normal
 #CARPETA_DATOS = r"D:\programacion\python"
 CARPETA_DATOS = r"E:\Python\Python Project\datos"
 ARCHIVO_DATOS = os.path.join(CARPETA_DATOS, "inventario.json")
-ARCHIVO_CONTROL = os.path.join(CARPETA_DATOS, "control.json")
+ARCHIVO_CONTROL = os.path.join(CARPETA_DATOS, "control.json")   # >>>>>>>>>>>>>>>>>>  Agregando un nuevo archivo 
 #................................................................................
 
 # === SOLUCIÓN USB: RUTA AUTOMATIZADA ===
@@ -37,27 +39,42 @@ INVENTARIO_DEFECTO = [
     {"id": 2, "marca": "Nissan", "modelo": "Versa", "precio_dia": 50, "disponible": True, "dias": 0, "km": 0, "venta": 0},
     {"id": 3, "marca": "Chevrolet", "modelo": "Aveo", "precio_dia": 40, "disponible": False, "dias": 0, "km": 0, "venta": 0}
 ]
-
+ # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> manejando fechas , creando diccionario 
+fecha_renta = "01/01/2026"
+fecha_obj = datetime.strptime(fecha_renta, "%d%m%Y").date()
 AUTO_CONTROL = [
-    {"id": 1, "km_recorridos": 0, "venta_total": 0, "mtto":}
+    {
+        "id": 1, "km_recorridos": 0, 
+        "venta_total": 0, 
+        "fecha_renta":fecha_obj,
+        "dias": 0
+        } 
 ]
-
-inventario = [] #  Arreglo vacio
+control = []          # >>>>>>>>>>>>>>>>>>>>>>>> 
+inventario = []      #  Arreglo vacio
 
 def cargar_inventario():
     """Lee el archivo JSON. Si la carpeta o el archivo no existen, los crea."""
     global inventario  # define que se use la varible creada fuera de esta funcion
+    global control    # para el informe 
     try:
         # Crea la carpeta D:\programacion\python si no existe en el disco duro
         if not os.path.exists(CARPETA_DATOS):
             os.makedirs(CARPETA_DATOS)
+            print(" no existia la carpeta de datos")
+            row_space()
             
-        if os.path.exists(ARCHIVO_DATOS):
+        if os.path.exists(ARCHIVO_DATOS):                                           
             with open(ARCHIVO_DATOS, "r", encoding="utf-8") as archivo:
                 inventario = json.load(archivo)
+            with open(ARCHIVO_CONTROL, "r", encoding="utf-8") as archivo_control:  # >>>>>>>>Abriendo archivo control.json
+                control = json.load(archivo_control) 
+            print(" Abriendo los archivos inventario.json y control.json ")
+            row_space()       
         else:
             inventario = INVENTARIO_DEFECTO
             guardar_inventario()
+            guarda_control()                 # >>>>>>>>>>>>>>>>   guarda control 
     except Exception as e:
         # Si hay un error de permisos o disco, usa el defecto de forma temporal
         inventario = INVENTARIO_DEFECTO
@@ -70,9 +87,15 @@ def guardar_inventario():
     except Exception as e:
         print(f"\n{COLOR_ERROR}Error al guardar el archivo: {e}{COLOR_RESET}")
 
+def guarda_control():                          # >>>>>>>>>>>>>>>>>>>> guardando archivo control.json 
+    try:
+        with open(ARCHIVO_CONTROL, "w", encoding="utf-8") as archivo_control:
+           json.dump(control, archivo_control, indent=4, ensure_ascii=False)      # error en archivo_control ? 
+    except Exception as b:           
+
 def limpiar_pantalla():
     if os.name == 'nt':
-        os.system('cls')
+       os.system('cls')
     else:
         os.system('clear')
         
@@ -91,6 +114,14 @@ def mostrar_inventario():
     for auto in inventario:
         estado = f"{COLOR_EXITO}Disponible{COLOR_RESET}" if auto["disponible"] else f"{COLOR_ERROR}Rentado{COLOR_RESET}"
         print(f"[{auto['id']}] {auto['marca']} {auto['modelo']} - ${auto['precio_dia']}/día ({estado}) rentado por {COLOR_ADMIN}{auto['dias']} dias{COLOR_RESET}")
+
+def mostrar_informe():                                                                  # >>>>>>>> def para mostrar el informe 
+    print(f"\n{COLOR_TITULO}=================================================")
+    print("------- INFORME DE AUTOS  -------")
+    print(f"\n ================================================={COLOR_RESET} ")
+    for auto_c in control:
+        estado = f"{COLOR_EXITO}Disponible{COLOR_RESET}" if auto_c["disponible"] else f"{COLOR_ERROR}Rentado{COLOR_RESET}"
+        print(f"[{auto_c['id']}] {auto_c['venta_total']} {auto_c['fecha_renta']} {auto_c['dias']}{COLOR_RESET}")        
 
 def mostrar_inv_disp():
     print(f"\n{COLOR_TITULO}=================================================")
@@ -161,6 +192,8 @@ def regresar_auto():
                     auto["disponible"] = True
                     auto["km"] = km_recorridos
                     auto["venta"] = auto['dias'] * auto['precio_dia'] + km_recorridos
+
+                    
                    
                     limpiar_pantalla()
                     print (f"\nkilometros recorridos" , km_recorridos)
@@ -196,7 +229,8 @@ def menu_administrador():
         print("    PANEL DE ADMINISTRACIÓN      ")
         print(f"================================={COLOR_RESET}")
         print("1. Agregar nuevo auto al inventario")
-        print("2. Volver al menú principal")
+        print("2. Ver informe de autos ")
+        print("9. Volver al menú principal")
         
         opcion = input("\nSeleccione una opción (1-2): ")
         
@@ -241,8 +275,12 @@ def menu_administrador():
             except ValueError:
                 print(f"\n{COLOR_ERROR}Error: El precio debe ser un número válido.{COLOR_RESET}")
                 row_space()
+
+        elif opcion == 2:
+            print ("Informe de autos rentados")
+
                 
-        elif opcion == "2":
+        elif opcion == "9":    # ----------------  9 
             break
         else:
             print(f"\n{COLOR_ERROR}Opción no válida.{COLOR_RESET}")
