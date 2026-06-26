@@ -17,7 +17,7 @@ COLOR_RESET = "\033[0m"    # Volver al color normal
 #................................................................................
 # RUTA SOLICITADA: Se usa os.path.join para evitar problemas con las barras invertidas en Windows
 #CARPETA_DATOS = r"D:\programacion\python"
-CARPETA_DATOS = r"E:\Python\Python Project\datos"
+CARPETA_DATOS = os.path.abspath(r"E:\Python\Python Project\datos")
 ARCHIVO_DATOS = os.path.join(CARPETA_DATOS, "inventario.json")
 ARCHIVO_CONTROL = os.path.join(CARPETA_DATOS, "control.json")   # >>>>>>>>>>>>>>>>>>  Agregando un nuevo archivo 
 #................................................................................
@@ -30,8 +30,8 @@ ARCHIVO_CONTROL = os.path.join(CARPETA_DATOS, "control.json")   # >>>>>>>>>>>>>>
 #CARPETA_DATOS = os.path.join(CARPETA_PROYECTO, "datos")
 #ARCHIVO_DATOS = os.path.join(CARPETA_DATOS, "inventario.json")
 
-# Contraseña para la opción oculta
-CLAVE_ADMIN = "admin123"
+
+CLAVE_ADMIN = "admin123" # Contraseña para la opción oculta
 
 # Inventario inicial por defecto (solo se usa si el archivo JSON no existe)
 INVENTARIO_DEFECTO = [
@@ -41,13 +41,13 @@ INVENTARIO_DEFECTO = [
 ]
  # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> manejando fechas , creando diccionario 
 fecha_renta = "01/01/2026"
-fecha_obj = datetime.strptime(fecha_renta, "%d%m%Y").date()
+# fecha_obj = datetime.strptime(fecha_renta, "%d/%m/%Y").date()
 AUTO_CONTROL = [
     {
-        "id": 1, "km_recorridos": 0, 
-        "venta_total": 0, 
-        "fecha_renta":fecha_obj,
-        "dias": 0
+        "c_id": 1, "km_recorridos": 0, 
+        "c_venta_total": 0, 
+        "c_fecha_renta":fecha_renta,
+        "c_dias": 0
         } 
 ]
 control = []          # >>>>>>>>>>>>>>>>>>>>>>>> 
@@ -58,12 +58,20 @@ def cargar_inventario():
     global inventario  # define que se use la varible creada fuera de esta funcion
     global control    # para el informe 
     try:
-        # Crea la carpeta D:\programacion\python si no existe en el disco duro
+        # Crea la carpeta D:\programacion\python ó E:\....  si no existe en el disco duro
         if not os.path.exists(CARPETA_DATOS):
             os.makedirs(CARPETA_DATOS)
             print(" no existia la carpeta de datos")
             row_space()
-            
+
+        # Código de diagnóstico temporal
+        if os.path.exists(CARPETA_DATOS):
+            print("Archivos reales encontrados en la carpeta:")
+            print(os.listdir(CARPETA_DATOS))
+            print("se solicita que se habra ,")
+            print (CARPETA_DATOS)
+            row_space()
+    
         if os.path.exists(ARCHIVO_DATOS):                                           
             with open(ARCHIVO_DATOS, "r", encoding="utf-8") as archivo:
                 inventario = json.load(archivo)
@@ -75,27 +83,31 @@ def cargar_inventario():
             inventario = INVENTARIO_DEFECTO
             guardar_inventario()
             guarda_control()                 # >>>>>>>>>>>>>>>>   guarda control 
+            print(" no se encontro el archivo ")
+            row_space()
     except Exception as e:
         # Si hay un error de permisos o disco, usa el defecto de forma temporal
         inventario = INVENTARIO_DEFECTO
-
+        print("se cargo el inventario por defecto")
+        row_space()
 def guardar_inventario():
     """Guarda el estado actual del inventario en el archivo JSON."""
     try:
         with open(ARCHIVO_DATOS, "w", encoding="utf-8") as archivo:
-            json.dump(inventario, archivo, indent=4, ensure_ascii=False)
+           json.dump(inventario, archivo, indent=4, ensure_ascii=False)
     except Exception as e:
         print(f"\n{COLOR_ERROR}Error al guardar el archivo: {e}{COLOR_RESET}")
 
 def guarda_control():                          # >>>>>>>>>>>>>>>>>>>> guardando archivo control.json 
     try:
         with open(ARCHIVO_CONTROL, "w", encoding="utf-8") as archivo_control:
-           json.dump(control, archivo_control, indent=4, ensure_ascii=False)      # error en archivo_control ? 
-    except Exception as b:           
+           json.dump(control, archivo_control, indent=4, ensure_ascii=False)     
+    except Exception as b:     
+        print(f"\n{COLOR_ERROR}Error al guardar el archivo de control: {b}{COLOR_RESET}")
 
 def limpiar_pantalla():
     if os.name == 'nt':
-       os.system('cls')
+        os.system('cls')
     else:
         os.system('clear')
         
@@ -104,13 +116,10 @@ def row_space():
     print(".")
     wait = input(f"\n {COLOR_TITULO}ENTER PARA CONTINUAR ..{COLOR_RESET} ")
 
-print("probando el nuevo token")
-row_space
-
 def mostrar_inventario():
     print(f"\n{COLOR_TITULO}=================================================")
     print("------- INVENTARIO DE AUTOS -------")
-    print(f"\n ================================================={COLOR_RESET} ")
+    print(f"================================================={COLOR_RESET} ")
     for auto in inventario:
         estado = f"{COLOR_EXITO}Disponible{COLOR_RESET}" if auto["disponible"] else f"{COLOR_ERROR}Rentado{COLOR_RESET}"
         print(f"[{auto['id']}] {auto['marca']} {auto['modelo']} - ${auto['precio_dia']}/día ({estado}) rentado por {COLOR_ADMIN}{auto['dias']} dias{COLOR_RESET}")
@@ -118,7 +127,7 @@ def mostrar_inventario():
 def mostrar_informe():                                                                  # >>>>>>>> def para mostrar el informe 
     print(f"\n{COLOR_TITULO}=================================================")
     print("------- INFORME DE AUTOS  -------")
-    print(f"\n ================================================={COLOR_RESET} ")
+    print(f"================================================={COLOR_RESET} ")
     for auto_c in control:
         estado = f"{COLOR_EXITO}Disponible{COLOR_RESET}" if auto_c["disponible"] else f"{COLOR_ERROR}Rentado{COLOR_RESET}"
         print(f"[{auto_c['id']}] {auto_c['venta_total']} {auto_c['fecha_renta']} {auto_c['dias']}{COLOR_RESET}")        
@@ -193,15 +202,16 @@ def regresar_auto():
                     auto["km"] = km_recorridos
                     auto["venta"] = auto['dias'] * auto['precio_dia'] + km_recorridos
 
-                    
-                   
                     limpiar_pantalla()
                     print (f"\nkilometros recorridos" , km_recorridos)
                     print(f"\ntotal a pagar es de: $ {auto['venta']}  por  {auto['dias']} dias de uso")
                     auto["dias"] = 0
                     auto["km"] = 0
                     print(f"\n{COLOR_EXITO}¡Éxito! Auto regresado exitosamente: {auto['marca']} {auto['modelo']}.{COLOR_RESET}")
-                    row_space()        #  enter para continuar
+                    # lineas de control para conocer los valores de las variables 
+                    print ("c_id")
+                    print ("c_venta")
+                    row_space()                      #  enter para continuar
                     guardar_inventario()
                     return
                 else:
@@ -276,7 +286,7 @@ def menu_administrador():
                 print(f"\n{COLOR_ERROR}Error: El precio debe ser un número válido.{COLOR_RESET}")
                 row_space()
 
-        elif opcion == 2:
+        elif opcion == "2":
             print ("Informe de autos rentados")
 
                 

@@ -1,0 +1,77 @@
+
+25/06/26
+
+1.- Se instalo from datetime:  
+
+from datetime import datetime
+
+2.- se creó la ruta a los datos: 
+
+ARCHIVO_CONTROL = os.path.join(CARPETA_DATOS, "control.json")
+
+3.- se crea la variable y el objeto:
+fecha_renta = "01/01/2026"
+fecha_obj = datetime.strptime(fecha_renta, "%d%m%Y").date()
+
+4.- se crea el diccionario : 
+
+AUTO_CONTROL = [
+    {
+        "id": 1, "km_recorridos": 0, 
+        "venta_total": 0, 
+        "fecha_renta":fecha_obj,
+        "dias": 0
+        } 
+]
+
+5.- creando diccionario vacio para cargar control.jnso:
+
+control = []    
+
+6.- creando funcion 
+
+def guarda_control():                          # >>>>>>>>>>>>>>>>>>>> guardando archivo control.json 
+    try:
+        with open(ARCHIVO_CONTROL, "w", encoding="utf-8") as archivo_control:
+           json.dump(control, archivo_control, indent=4, ensure_ascii=False)      # error en archivo_control ? 
+    except Exception as b:           
+
+7.-creando y  definiendo control como variable global
+
+8.- dentro del def cargar_inventario y despues del else del if if os.path.exists(ARCHIVO_DATOS)  
+    se agrega funcion guardar_control() 
+
+9.- se crea: 
+
+def guarda_control():                          # >>>>>>>>>>>>>>>>>>>> guardando archivo control.json 
+    try:
+        with open(ARCHIVO_DATOS, "w", encoding="utf-8") as archivo:
+           json.dump(control, archivo_control, indent=4, ensure_ascii=False)      # error en archivo_control ? 
+    except Exception as b:     
+
+
+10.- se crea: 
+
+def mostrar_informe():                                                                  # >>>>>>>> def para mostrar el informe 
+    print(f"\n{COLOR_TITULO}=================================================")
+    print("------- INFORME DE AUTOS  -------")
+    print(f"\n ================================================={COLOR_RESET} ")
+    for auto_c in control:
+        estado = f"{COLOR_EXITO}Disponible{COLOR_RESET}" if auto_c["disponible"] else f"{COLOR_ERROR}Rentado{COLOR_RESET}"
+        print(f"[{auto_c['id']}] {auto_c['venta_total']} {auto_c['fecha_renta']} {auto_c['dias']}{COLOR_RESET}")        
+
+
+11.- agregar valores a los indices:
+
+
+
+
+
+
+
+
+
+
+
+
+
