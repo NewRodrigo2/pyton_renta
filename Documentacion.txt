@@ -1,3 +1,15 @@
+26/06/2026 13:00     URGENTE === >   CLONAR MEMORIA 
+
+a./ el GITHUB CORRECTO ES https://github.com/NewRodrigo2/pyton_renta/tree/main/prueba.py
+b./ COMPU / VSCODE / TIENE second_branch
+c./ vscode usb /  NO ACTUALIZADO / PASAR EL CORRECTO 
+d./ tengo pueba-IA.txt que solo sirve para la modificacion del vscode usb
+
+INTENTAR PASAR A GITHUB LO MAS RECIENTE
+PRACTICAR HACER PULL REQUEST PARA NO TENER QUE HACER COPIAR/PEGAR
+
+CORREGIR LA RUTA DEL MAS RECIENTE "VSC USB" NO RECONOCE EL ARCHIVO
+
 
 25/06/26
 

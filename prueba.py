@@ -19,7 +19,7 @@ COLOR_RESET = "\033[0m"    # Volver al color normal
 #CARPETA_DATOS = r"D:\programacion\python"
 CARPETA_DATOS = os.path.abspath(r"E:\Python\Python Project\datos")
 ARCHIVO_DATOS = os.path.join(CARPETA_DATOS, "inventario.json")
-ARCHIVO_CONTROL = os.path.join(CARPETA_DATOS, "control.json")   # >>>>>>>>>>>>>>>>>>  Agregando un nuevo archivo 
+#ARCHIVO_CONTROL = os.path.join(CARPETA_DATOS, "control.json")   # >>>>>>>>>>>>>>>>>>  Agregando un nuevo archivo 
 #................................................................................
 
 # === SOLUCIÓN USB: RUTA AUTOMATIZADA ===
@@ -57,23 +57,23 @@ def cargar_inventario():
     """Lee el archivo JSON. Si la carpeta o el archivo no existen, los crea."""
     global inventario  # define que se use la varible creada fuera de esta funcion
     global control    # para el informe 
+
     try:
         # Crea la carpeta D:\programacion\python ó E:\....  si no existe en el disco duro
         if not os.path.exists(CARPETA_DATOS):
             os.makedirs(CARPETA_DATOS)
-            print(" no existia la carpeta de datos")
+            print(" no existe la carpeta de datos",CARPETA_DATOS )
             row_space()
 
-        # Código de diagnóstico temporal
-        if os.path.exists(CARPETA_DATOS):
-            print("Archivos reales encontrados en la carpeta:")
+  
+        if os.path.exists(CARPETA_DATOS):                                          # Código de diagnóstico temporal
+            print("\nse solicita que se habra ,",CARPETA_DATOS )
+            print("\nArchivos reales encontrados en la carpeta:")
             print(os.listdir(CARPETA_DATOS))
-            print("se solicita que se habra ,")
-            print (CARPETA_DATOS)
             row_space()
-    
+            
         if os.path.exists(ARCHIVO_DATOS):                                           
-            with open(ARCHIVO_DATOS, "r", encoding="utf-8") as archivo:
+            with open(ARCHIVO_DATOS, "r", encoding="utf-8") as archivo:            # abriendo el inventario.json
                 inventario = json.load(archivo)
             with open(ARCHIVO_CONTROL, "r", encoding="utf-8") as archivo_control:  # >>>>>>>>Abriendo archivo control.json
                 control = json.load(archivo_control) 
